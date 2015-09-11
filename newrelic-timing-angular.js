@@ -4,15 +4,20 @@
  * License: MIT
  */
 
-(function(angular, NewrelicTiming) {
+(function(angular) {
   if (typeof angular === 'undefined' || angular === null || typeof angular.module !== 'function') {
     return;
   }
 
-  var module = angular.module('newrelic-timing', []);
+  var module = angular.module('newrelic-timing', []).factory('NewRelicTiming', NewRelicTimingFactory);
 
   if (typeof module.run !== 'function') {
     return;
+  }
+
+  NewRelicTimingFactory.$inject = ['$window'];
+  function NewRelicTimingFactory($window) {
+    return $window.NewrelicTiming;
   }
 
   module.run(['$rootScope', '$location', function($rootScope, $location) {
@@ -39,4 +44,4 @@
     });
   }]);
 
-})(window.angular, window.NewrelicTiming);
+})(window.angular);
