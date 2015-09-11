@@ -6,14 +6,14 @@
   function NewRelicTimingFactory($window) {
     return $window.NewrelicTiming;
   }
-  
-  var module = angular.module('newrelic-timing', []).factory('NewRelicTiming', ['$window', NewRelicTimingFactory]);
 
-  if (typeof module.run !== 'function') {
+  var nrModule = angular.module('newrelic-timing', []).factory('NewRelicTiming', ['$window', NewRelicTimingFactory]);
+
+  if (typeof nrModule.run !== 'function') {
     return;
   }
 
-  module.run(['$rootScope', '$location', function($rootScope, $location) {
+  nrModule.run(['$rootScope', '$location', function($rootScope, $location) {
     var newrelicTiming = new NewrelicTiming();
 
     function changeStart(){
