@@ -1,26 +1,25 @@
 /*!
- * newrelic-timing v0.4.0 - Integrates Single Page Apps with NewRelic's Real User Monitoring
+ * newrelic-timing v0.5.0 - Integrates Single Page Apps with NewRelic's Real User Monitoring
  * Copyright (c) 2015 Diogo Terror <diogo@uken.com>, pitr <pitr.vern@gmail.com> - https://github.com/uken/newrelic-timing
  * License: MIT
  */
 
-(function(angular) {
+(function(angular, NewrelicTiming) {
   if (typeof angular === 'undefined' || angular === null || typeof angular.module !== 'function') {
     return;
   }
 
-  var module = angular.module('newrelic-timing', []).factory('NewRelicTiming', NewRelicTimingFactory);
-
-  if (typeof module.run !== 'function') {
-    return;
-  }
-
-  NewRelicTimingFactory.$inject = ['$window'];
   function NewRelicTimingFactory($window) {
     return $window.NewrelicTiming;
   }
 
-  module.run(['$rootScope', '$location', function($rootScope, $location) {
+  var nrModule = angular.module('newrelic-timing', []).factory('NewRelicTiming', ['$window', NewRelicTimingFactory]);
+
+  if (typeof nrModule.run !== 'function') {
+    return;
+  }
+
+  nrModule.run(['$rootScope', '$location', function($rootScope, $location) {
     var newrelicTiming = new NewrelicTiming();
 
     function changeStart(){
@@ -44,4 +43,4 @@
     });
   }]);
 
-})(window.angular);
+})(window.angular, window.NewrelicTiming);
