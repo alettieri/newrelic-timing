@@ -1,4 +1,4 @@
-(function(angular, NewrelicTiming) {
+(function(angular) {
   if (typeof angular === 'undefined' || angular === null || typeof angular.module !== 'function') {
     return;
   }
@@ -13,8 +13,8 @@
     return;
   }
 
-  nrModule.run(['$rootScope', '$location', function($rootScope, $location) {
-    var newrelicTiming = new NewrelicTiming();
+  nrModule.run(['$rootScope', '$location', 'NewRelicTiming', function($rootScope, $location, NewRelicTiming) {
+    var newrelicTiming = new NewRelicTiming();
 
     function changeStart(){
       newrelicTiming.mark('navStart');
@@ -37,4 +37,4 @@
     });
   }]);
 
-})(window.angular, window.NewrelicTiming);
+})(window.angular);
