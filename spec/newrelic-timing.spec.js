@@ -39,8 +39,8 @@
           'pageRendered': 20
         };
 
-        newrelicTiming.NREUM = {
-          inlineHit: function() {
+        newrelicTiming.newrelic = {
+          addToTrace: function() {
           }
         };
       });
@@ -49,21 +49,21 @@
         expect(newrelicTiming.checkBeaconRequirements()).toBeTruthy();
       });
 
-      it('returns false if NREUM is not defined', function() {
-        newrelicTiming.NREUM = null;
+      it('returns false if newrelic is not defined', function() {
+        newrelicTiming.newrelic = null;
 
         expect(newrelicTiming.checkBeaconRequirements()).toBeFalsy();
       });
 
-      it('returns false if NREUM.inlineHit is not defined', function() {
-        newrelicTiming.NREUM = {};
+      it('returns false if newrelic.addToTrace is not defined', function() {
+        newrelicTiming.newrelic = {};
 
         expect(newrelicTiming.checkBeaconRequirements()).toBeFalsy();
       });
 
-      it('returns false if NREUM.inlineHit is not a function', function() {
-        newrelicTiming.NREUM = {
-          inlineHit: 42
+      it('returns false if newrelic.addToTrace is not a function', function() {
+        newrelicTiming.newrelic = {
+          addToTrace: 42
         };
 
         expect(newrelicTiming.checkBeaconRequirements()).toBeFalsy();
@@ -93,8 +93,8 @@
         newrelicTiming.marks.domLoaded = 9;
         newrelicTiming.marks.pageRendered = 20;
 
-        newrelicTiming.NREUM = {
-          inlineHit: function() {
+        newrelicTiming.newrelic = {
+          addToTrace: function() {
             results = [].slice.call(arguments, 0);
           }
         };
@@ -104,17 +104,17 @@
         };
       });
 
-      it('sends specific markings to NREUM', function() {
+      it('sends specific markings to newrelic', function() {
         newrelicTiming.sendNRBeacon('page1');
 
-        expect(results).toEqual(['page1', 0, 0, 0, 4, 15]);
+        expect(results).toEqual( jasmine.objectContaining([{ name : 'page1', start: 4, end: 15}]));
       });
 
       it('handles hash in fragments', function() {
         window.location.hash = '#page2/page3/';
         newrelicTiming.sendNRBeacon();
 
-        expect(results).toEqual(['page2/page3/', 0, 0, 0, 4, 15]);
+        expect(results).toEqual(jasmine.objectContaining([{ name: 'page2/page3/', start: 4, end: 15}]));
       });
     });
   });
